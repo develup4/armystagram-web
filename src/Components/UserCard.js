@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import Avatar from "./Avatar";
-import FatText from "./FatText";
-import { Link } from "react-router-dom";
-import FollowButton from "./FollowButton";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import Avatar from './Avatar';
+import FatText from './FatText';
+import { Link } from 'react-router-dom';
+import FollowButton from './Button/FollowButton';
 
 const Card = styled.div`
-  ${props => props.theme.whiteBox}
+  ${(props) => props.theme.whiteBox}
   display:flex;
   flex-direction: column;
   align-items: center;
@@ -25,7 +25,7 @@ const ELink = styled(Link)`
 
 const UserCard = ({ id, username, isFollowing, url, isSelf }) => (
   <Card>
-    <EAvatar url={url} size={"md"} />
+    <EAvatar url={url} size={'md'} />
     <ELink to={`/${username}`}>
       <FatText text={username} />
     </ELink>
@@ -38,7 +38,7 @@ UserCard.propTypes = {
   username: PropTypes.string.isRequired,
   isFollowing: PropTypes.bool.isRequired,
   url: PropTypes.string.isRequired,
-  isSelf: PropTypes.bool.isRequired
+  isSelf: PropTypes.bool.isRequired,
 };
 
 export default UserCard;

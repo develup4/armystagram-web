@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { Helmet } from "rl-react-helmet";
-import Loader from "../../Components/Loader";
-import Avatar from "../../Components/Avatar";
-import FatText from "../../Components/FatText";
-import FollowButton from "../../Components/FollowButton";
-import SquarePost from "../../Components/SquarePost";
-import Button from "../../Components/Button";
+import React from 'react';
+import styled from 'styled-components';
+import { Helmet } from 'rl-react-helmet';
+import Loader from '../../Components/Loader';
+import Avatar from '../../Components/Avatar';
+import FatText from '../../Components/FatText';
+import FollowButton from '../../Components/Button/FollowButton';
+import SquarePost from '../../Components/SquarePost';
+import Button from '../../Components/Button/Button';
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -80,8 +80,8 @@ export default ({ loading, data, logOut }) => {
         followingCount,
         followersCount,
         postsCount,
-        posts
-      }
+        posts,
+      },
     } = data;
     return (
       <Wrapper>
@@ -90,13 +90,13 @@ export default ({ loading, data, logOut }) => {
         </Helmet>
         <Header>
           <HeaderColumn>
-            <Avatar size="lg" url={avatar} />
+            <Avatar size='lg' url={avatar} />
           </HeaderColumn>
           <HeaderColumn>
             <UsernameRow>
-              <Username>{username}</Username>{" "}
+              <Username>{username}</Username>{' '}
               {isSelf ? (
-                <Button onClick={logOut} text="Log Out" />
+                <Button onClick={logOut} text='Log Out' />
               ) : (
                 <FollowButton isFollowing={isFollowing} id={id} />
               )}
@@ -118,7 +118,7 @@ export default ({ loading, data, logOut }) => {
         </Header>
         <Posts>
           {posts &&
-            posts.map(post => (
+            posts.map((post) => (
               <SquarePost
                 key={post.id}
                 likeCount={post.likeCount}

@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, withRouter } from 'react-router-dom';
-import Input from './Input';
-import useInput from '../Hooks/useInput';
-import { Compass, HeartEmpty, User } from './Icons';
+import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
-import { ME } from '../SharedQueries';
+import { Link, withRouter } from 'react-router-dom';
+import { Input, useInput } from './Input';
+import { DmIcon, User } from './Icons';
 import logoImage from '../Resources/Images/Logo.png';
 
 const Header = styled.header`
@@ -20,7 +19,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 0px;
+  padding: 10px 0px;
   z-index: 2;
 `;
 
@@ -29,6 +28,7 @@ const HeaderWrapper = styled.div`
   max-width: ${(props) => props.theme.maxWidth};
   display: flex;
   justify-content: center;
+  margin-top: 5px;
 `;
 
 const HeaderColumn = styled.div`
@@ -68,16 +68,24 @@ const Logo = styled.img`
   src: url(${(props) => props.src});
   width: 120px;
   height: auto;
-  padding-bottom: 5px;
+`;
+
+export const ME = gql`
+  {
+    me {
+      username
+    }
+  }
 `;
 
 export default withRouter(({ history }) => {
-  const search = useInput('');
   const { data } = useQuery(ME);
+  const searchInput = useInput('');
   const onSearchSubmit = (e) => {
     e.preventDefault();
-    history.push(`/search?term=${search.value}`);
+    history.push(`/search?term=${searchInput.value}`);
   };
+
   return (
     <Header>
       <HeaderWrapper>
@@ -89,21 +97,18 @@ export default withRouter(({ history }) => {
         <HeaderColumn>
           <form onSubmit={onSearchSubmit}>
             <SearchInput
-              value={search.value}
-              onChange={search.onChange}
-              placeholder='Search'
+              value={searchInput.value}
+              onChange={searchInput.onChange}
+              placeholder='❣  검색'
             />
           </form>
         </HeaderColumn>
         <HeaderColumn>
-          <HeaderLink to='/explore'>
-            <Compass />
-          </HeaderLink>
-          <HeaderLink to='/notifications'>
-            <HeartEmpty />
+          <HeaderLink to='/message'>
+            <DmIcon />
           </HeaderLink>
           {!data.me ? (
-            <HeaderLink to='/#'>
+            <HeaderLink to='/auth'>
               <User />
             </HeaderLink>
           ) : (

@@ -1,10 +1,38 @@
-import React from "react";
-import { Helmet } from "rl-react-helmet";
-import styled from "styled-components";
-import { gql } from "apollo-boost";
-import { useQuery } from "react-apollo-hooks";
-import Loader from "../Components/Loader";
-import Post from "../Components/Post";
+import React from 'react';
+import { Helmet } from 'rl-react-helmet';
+import styled from 'styled-components';
+import { gql } from 'apollo-boost';
+import { useQuery } from 'react-apollo-hooks';
+import Loader from '../Components/Loader';
+import Post from '../Components/Post';
+
+const SEE_ALL_FEEDS = gql`
+  {
+    seeAllFeeds {
+      id
+      caption
+      user {
+        id
+        profile
+        username
+      }
+      files {
+        id
+        url
+      }
+      likeCount
+      comments {
+        id
+        text
+        user {
+          id
+          username
+        }
+      }
+      createdAt
+    }
+  }
+`;
 
 const FEED_QUERY = gql`
   {
@@ -44,26 +72,25 @@ const Wrapper = styled.div`
 `;
 
 export default () => {
-  const { data, loading } = useQuery(FEED_QUERY);
+  const { data, loading } = useQuery(SEE_ALL_FEEDS);
   return (
     <Wrapper>
       <Helmet>
-        <title>Feed | Prismagram</title>
+        <title>Feed | Armystagram</title>
       </Helmet>
       {loading && <Loader />}
       {!loading &&
         data &&
         data.seeFeed &&
-        data.seeFeed.map(post => (
+        data.seeFeed.map((post) => (
           <Post
             key={post.id}
             id={post.id}
-            location={post.location}
             caption={post.caption}
             user={post.user}
             files={post.files}
             likeCount={post.likeCount}
-            isLiked={post.isLiked}
+            isLiked={true}
             comments={post.comments}
             createdAt={post.createdAt}
           />

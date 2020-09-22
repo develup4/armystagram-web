@@ -1,6 +1,6 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { Logo } from "./Icons";
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+import ArmyLogo from '../Resources/Images/ArmyLogo.png';
 
 const Animation = keyframes`
     0%{
@@ -20,8 +20,14 @@ const Loader = styled.div`
   text-align: center;
 `;
 
+const ArmyLogoImg = styled.img`
+  src: url(${(props) => props.src});
+  width: 40px;
+  height: auto;
+`;
+
 export default () => (
   <Loader>
-    <Logo size={36} />
+    <ArmyLogoImg src={ArmyLogo} />
   </Loader>
 );

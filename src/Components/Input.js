@@ -1,26 +1,39 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-const Container = styled.input`
+export const useInput = (defaultValue) => {
+  const [value, setValue] = useState(defaultValue);
+
+  const onChange = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setValue(value);
+  };
+
+  return { value, onChange, setValue };
+};
+
+const BasicInput = styled.input`
   border: 0;
-  border: ${props => props.theme.boxBorder};
-  border-radius: ${props => props.theme.borderRadius};
-  background-color: ${props => props.theme.bgColor};
+  border: ${(props) => props.theme.boxBorder};
+  border-radius: ${(props) => props.theme.borderRadius};
+  background-color: ${(props) => props.theme.bgColor};
   height: 35px;
   font-size: 12px;
   padding: 0px 15px;
 `;
 
-const Input = ({
+export const Input = ({
   placeholder,
   required = true,
   value,
   onChange,
-  type = "text",
-  className
+  type = 'text',
+  className,
 }) => (
-  <Container
+  <BasicInput
     className={className}
     placeholder={placeholder}
     required={required}
@@ -35,7 +48,5 @@ Input.propTypes = {
   required: PropTypes.bool,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
-
-export default Input;

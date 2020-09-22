@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import TextareaAutosize from "react-autosize-textarea";
-import FatText from "../FatText";
-import Avatar from "../Avatar";
-import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import TextareaAutosize from 'react-autosize-textarea';
+import FatText from '../FatText';
+import Avatar from '../Avatar';
+import { HeartFull, HeartEmpty, Comment as CommentIcon } from '../Icons';
 
 const Post = styled.div`
-  ${props => props.theme.whiteBox};
+  ${(props) => props.theme.whiteBox};
   width: 100%;
   max-width: 600px;
   user-select: none;
@@ -48,10 +48,10 @@ const File = styled.div`
   height: 600px;
   position: absolute;
   top: 0;
-  background-image: url(${props => props.src});
+  background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
-  opacity: ${props => (props.showing ? 1 : 0)};
+  opacity: ${(props) => (props.showing ? 1 : 0)};
   transition: opacity 0.5s linear;
 `;
 
@@ -80,7 +80,7 @@ const Timestamp = styled.span`
   font-size: 12px;
   margin: 10px 0px;
   padding-bottom: 10px;
-  border-bottom: ${props => props.theme.lightGreyColor} 1px solid;
+  border-bottom: ${(props) => props.theme.lightGreyColor} 1px solid;
 `;
 
 const Textarea = styled(TextareaAutosize)`
@@ -110,7 +110,6 @@ const Caption = styled.div`
 
 export default ({
   user: { username, avatar },
-  location,
   files,
   isLiked,
   likeCount,
@@ -121,16 +120,16 @@ export default ({
   onKeyPress,
   comments,
   selfComments,
-  caption
+  caption,
 }) => (
   <Post>
     <Header>
-      <Avatar size="sm" url={avatar} />
+      <Avatar size='sm' url={avatar} />
       <UserColumn>
         <Link to={`/${username}`}>
           <FatText text={username} />
         </Link>
-        <Location>{location}</Location>
+        <Location>location</Location>
       </UserColumn>
     </Header>
     <Files>
@@ -148,19 +147,19 @@ export default ({
           <CommentIcon />
         </Button>
       </Buttons>
-      <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
+      <FatText text={likeCount === 1 ? '1 like' : `${likeCount} likes`} />
       <Caption>
         <FatText text={username} /> {caption}
       </Caption>
       {comments && (
         <Comments>
-          {comments.map(comment => (
+          {comments.map((comment) => (
             <Comment key={comment.id}>
               <FatText text={comment.user.username} />
               {comment.text}
             </Comment>
           ))}
-          {selfComments.map(comment => (
+          {selfComments.map((comment) => (
             <Comment key={comment.id}>
               <FatText text={comment.user.username} />
               {comment.text}
@@ -171,7 +170,7 @@ export default ({
       <Timestamp>{createdAt}</Timestamp>
       <Textarea
         onKeyPress={onKeyPress}
-        placeholder={"Add a comment..."}
+        placeholder={'Add a comment...'}
         value={newComment.value}
         onChange={newComment.onChange}
       />
