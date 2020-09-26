@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Avatar from './Avatar';
+import ProfilePicture from './ProfilePicture';
 import FatText from './FatText';
 import { Link } from 'react-router-dom';
 import FollowButton from './Button/FollowButton';
@@ -14,7 +14,7 @@ const Card = styled.div`
   padding: 20px;
 `;
 
-const EAvatar = styled(Avatar)`
+const EAvatar = styled(ProfilePicture)`
   margin-bottom: 15px;
 `;
 
@@ -25,13 +25,15 @@ const ELink = styled(Link)`
 
 const UserCard = ({ id, username, isFollowing, url, isSelf }) => (
   <Card>
-    <EAvatar url={url} size={'md'} />
+    <EAvatar url={url} size={'middle'} />
     <ELink to={`/${username}`}>
       <FatText text={username} />
     </ELink>
     {!isSelf && <FollowButton id={id} isFollowing={isFollowing} />}
   </Card>
 );
+
+// TODO : PROFILE 이동 라우터 프로퍼티 이용 (블로그)
 
 UserCard.propTypes = {
   id: PropTypes.string.isRequired,

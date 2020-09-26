@@ -5,9 +5,9 @@ export default () => {
   return (
     <>
       <Helmet>
-        <title>Message | Armystagram</title>
+        <title>Likes | Armystagram</title>
       </Helmet>
-      <h1>Message</h1>
+      <h1>Likes</h1>
     </>
   );
 };

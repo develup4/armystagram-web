@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import { HeartFull, CommentFull } from "./Icons";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { HeartFullIcon, CommentFullIcon } from '../Resources/Icons/Icons';
 
 const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
@@ -18,7 +18,7 @@ const Overlay = styled.div`
 `;
 
 const Container = styled.div`
-  background-image: url(${props => props.bg});
+  background-image: url(${(props) => props.bg});
   background-size: cover;
   cursor: pointer;
   &:hover {
@@ -46,11 +46,11 @@ const SquarePost = ({ likeCount, commentCount, file }) => (
   <Container bg={file.url}>
     <Overlay>
       <Number>
-        <HeartFull />
+        <HeartFullIcon />
         <NumberText>{likeCount}</NumberText>
       </Number>
       <Number>
-        <CommentFull />
+        <CommentFullIcon />
         <NumberText>{commentCount}</NumberText>
       </Number>
     </Overlay>
@@ -60,7 +60,7 @@ const SquarePost = ({ likeCount, commentCount, file }) => (
 SquarePost.propTypes = {
   likeCount: PropTypes.number.isRequired,
   commentCount: PropTypes.number.isRequired,
-  file: PropTypes.object.isRequired
+  file: PropTypes.object.isRequired,
 };
 
 export default SquarePost;

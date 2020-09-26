@@ -4,8 +4,19 @@ import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import { Link, withRouter } from 'react-router-dom';
 import { Input, useInput } from './Input';
-import { DmIcon, User } from './Icons';
+import {
+  MessageIcon,
+  CompassIcon,
+  HeartEmptyIcon,
+  ProfileIcon,
+} from '../Resources/Icons/Icons';
 import logoImage from '../Resources/Images/Logo.png';
+
+const IS_LOGIN = gql`
+  {
+    isLoggedIn @client
+  }
+`;
 
 const Header = styled.header`
   width: 100%;
@@ -19,7 +30,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 0px;
+  padding: 7px 0px;
   z-index: 2;
 `;
 
@@ -60,7 +71,7 @@ const SearchInput = styled(Input)`
 
 const HeaderLink = styled(Link)`
   &:not(:last-child) {
-    margin-right: 30px;
+    margin-right: 20px;
   }
 `;
 
@@ -70,16 +81,8 @@ const Logo = styled.img`
   height: auto;
 `;
 
-export const ME = gql`
-  {
-    me {
-      username
-    }
-  }
-`;
-
 export default withRouter(({ history }) => {
-  const { data } = useQuery(ME);
+  const { isLogin } = useQuery(IS_LOGIN);
   const searchInput = useInput('');
   const onSearchSubmit = (e) => {
     e.preventDefault();
@@ -105,15 +108,21 @@ export default withRouter(({ history }) => {
         </HeaderColumn>
         <HeaderColumn>
           <HeaderLink to='/message'>
-            <DmIcon />
+            <MessageIcon />
           </HeaderLink>
-          {!data.me ? (
-            <HeaderLink to='/auth'>
-              <User />
+          <HeaderLink to='/popular'>
+            <CompassIcon />
+          </HeaderLink>
+          <HeaderLink to='/likes'>
+            <HeartEmptyIcon />
+          </HeaderLink>
+          {isLogin ? (
+            <HeaderLink to='/profile'>
+              <ProfileIcon />
             </HeaderLink>
           ) : (
-            <HeaderLink to={data.me.username}>
-              <User />
+            <HeaderLink to='/auth'>
+              <ProfileIcon />
             </HeaderLink>
           )}
         </HeaderColumn>

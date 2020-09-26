@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'rl-react-helmet';
 import Loader from '../../Components/Loader';
-import Avatar from '../../Components/Avatar';
+import ProfilePicture from '../../Components/ProfilePicture';
 import FatText from '../../Components/FatText';
 import FollowButton from '../../Components/Button/FollowButton';
 import SquarePost from '../../Components/SquarePost';
@@ -71,7 +71,7 @@ export default ({ loading, data, logOut }) => {
     const {
       seeUser: {
         id,
-        avatar,
+        profile,
         username,
         fullName,
         isFollowing,
@@ -90,7 +90,7 @@ export default ({ loading, data, logOut }) => {
         </Helmet>
         <Header>
           <HeaderColumn>
-            <Avatar size='lg' url={avatar} />
+            <ProfilePicture size='lg' url={profile} />
           </HeaderColumn>
           <HeaderColumn>
             <UsernameRow>

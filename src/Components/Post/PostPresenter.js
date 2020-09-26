@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import TextareaAutosize from 'react-autosize-textarea';
 import FatText from '../FatText';
-import Avatar from '../Avatar';
-import { HeartFull, HeartEmpty, Comment as CommentIcon } from '../Icons';
+import TextareaAutosize from 'react-autosize-textarea';
+import ProfilePicture from '../ProfilePicture';
+import {
+  HeartFullIcon,
+  HeartEmptyIcon,
+  CommentIcon,
+  MessageIcon,
+} from '../../Resources/Icons/Icons';
 
 const Post = styled.div`
   ${(props) => props.theme.whiteBox};
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
   user-select: none;
   margin-bottom: 25px;
   a {
@@ -27,10 +32,10 @@ const UserColumn = styled.div`
   margin-left: 10px;
 `;
 
-const Location = styled.span`
+const PictureCount = styled.span`
   display: block;
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 7px;
 `;
 
 const Files = styled.div`
@@ -45,7 +50,7 @@ const Files = styled.div`
 const File = styled.div`
   max-width: 100%;
   width: 100%;
-  height: 600px;
+  height: 650px;
   position: absolute;
   top: 0;
   background-image: url(${(props) => props.src});
@@ -55,19 +60,17 @@ const File = styled.div`
   transition: opacity 0.5s linear;
 `;
 
-const Button = styled.span`
-  cursor: pointer;
-`;
-
 const Meta = styled.div`
   padding: 15px;
 `;
 
+const Button = styled.span`
+  cursor: pointer;
+`;
+
 const Buttons = styled.div`
   ${Button} {
-    &:first-child {
-      margin-right: 10px;
-    }
+    margin-right: 10px;
   }
   margin-bottom: 10px;
 `;
@@ -109,27 +112,29 @@ const Caption = styled.div`
 `;
 
 export default ({
-  user: { username, avatar },
+  user: { username, profile },
+  caption,
   files,
+  currentItem,
   isLiked,
   likeCount,
-  createdAt,
-  newComment,
-  currentItem,
   toggleLike,
-  onKeyPress,
   comments,
+  newComment,
   selfComments,
-  caption,
+  onKeyPress,
+  createdAt,
 }) => (
   <Post>
     <Header>
-      <Avatar size='sm' url={avatar} />
+      <ProfilePicture size='small' url={profile} />
       <UserColumn>
         <Link to={`/${username}`}>
           <FatText text={username} />
         </Link>
-        <Location>location</Location>
+        <PictureCount>
+          {files.length === 1 ? '1 picture' : `${files.length} pictures`}
+        </PictureCount>
       </UserColumn>
     </Header>
     <Files>
@@ -141,10 +146,13 @@ export default ({
     <Meta>
       <Buttons>
         <Button onClick={toggleLike}>
-          {isLiked ? <HeartFull /> : <HeartEmpty />}
+          {isLiked ? <HeartFullIcon /> : <HeartEmptyIcon />}
         </Button>
         <Button>
           <CommentIcon />
+        </Button>
+        <Button>
+          <MessageIcon />
         </Button>
       </Buttons>
       <FatText text={likeCount === 1 ? '1 like' : `${likeCount} likes`} />
@@ -167,13 +175,23 @@ export default ({
           ))}
         </Comments>
       )}
-      <Timestamp>{createdAt}</Timestamp>
+      <Timestamp>{`${createdAt.split('T')[0]} ${
+        createdAt.split('T')[1].split('.')[0]
+      }`}</Timestamp>
       <Textarea
         onKeyPress={onKeyPress}
-        placeholder={'Add a comment...'}
+        placeholder={'댓글 달기...'}
         value={newComment.value}
         onChange={newComment.onChange}
       />
     </Meta>
   </Post>
 );
+
+// tODO: CAPTION 길이 넘치면 줄넘김 안됨, 이름도 캡
+// 댓글이 많으면 접는데 캡션은 안접도록
+// todo : 한끌 폰트,
+// 코멘트 버튼으로 아에 댓글을 열고닫기. 열면 일정크기의 스크롤 ㅐ널
+// 라이크 => 멤버 외 몇명이 좋아합니다. 클릭하면 팝업
+// 대댓글?
+// 댓글은 기본 두줄인데 버튼 누르면 패널 더 크게 보여주기(누를때만 스크롤?)

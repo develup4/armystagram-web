@@ -5,13 +5,14 @@ import GlobalStyles from './Styles/GlobalStyles';
 import Theme from './Styles/Theme';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Footer from './Components/Footer';
-import Auth from './Routes/Auth';
-import Feed from './Routes/Feed';
-import Message from './Routes/Message';
-import Search from './Routes/Search';
-import Profile from './Routes/Profile';
 import Header from './Components/Header';
+import Feed from './Routes/Feed';
+import Search from './Routes/Search';
+import Message from './Routes/Message';
+import Popular from './Routes/Popular';
+import Likes from './Routes/Likes';
+import Auth from './Routes/Auth';
+import Profile from './Routes/Profile';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -30,13 +31,14 @@ export default () => {
             <Wrapper>
               <Switch>
                 <Route exact path='/' component={Feed} />
-                <Route path='/auth' component={Auth} />
-                <Route path='/message' component={Message} />
                 <Route path='/search' component={Search} />
-                <Route path='/:username' component={Profile} />
+                <Route path='/message' component={Message} />
+                <Route path='/popular' component={Popular} />
+                <Route path='/likes' component={Likes} />
+                <Route path='/auth' component={Auth} />
+                <Route path='/profile' component={Profile} />
                 <Redirect from='*' to='/' />
               </Switch>
-              <Footer />
             </Wrapper>
           </>
         </HashRouter>

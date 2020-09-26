@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
 export const SEARCH = gql`
   query search($term: String!) {
@@ -12,7 +12,7 @@ export const SEARCH = gql`
     }
     searchUser(term: $term) {
       id
-      avatar
+      profile
       username
       isFollowing
       isSelf

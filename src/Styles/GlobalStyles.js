@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
 export default createGlobalStyle`
     ${reset};
@@ -8,14 +8,14 @@ export default createGlobalStyle`
         box-sizing:border-box;
     }
     body {
-        background-color:${props => props.theme.bgColor};
-        color:${props => props.theme.blackColor};
+        background-color:${(props) => props.theme.bgColor};
+        color:${(props) => props.theme.blackColor};
         font-size:14px;
         font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        padding-top: 140px;
+        padding-top: 75px;
     }
     a {
-        color:${props => props.theme.blueColor};
+        color:${(props) => props.theme.blueColor};
         text-decoration:none;
     }
     input:focus{
