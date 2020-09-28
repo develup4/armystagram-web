@@ -12,7 +12,7 @@ import Message from './Routes/Message';
 import Popular from './Routes/Popular';
 import Likes from './Routes/Likes';
 import Auth from './Routes/Auth';
-import Profile from './Routes/Profile';
+import { Profile, OtherProfile } from './Routes/Profile/Profile';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -37,6 +37,7 @@ export default () => {
                 <Route path='/likes' component={Likes} />
                 <Route path='/auth' component={Auth} />
                 <Route path='/profile' component={Profile} />
+                <Route path='/:username' component={OtherProfile} />
                 <Redirect from='*' to='/' />
               </Switch>
             </Wrapper>

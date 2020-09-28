@@ -1,8 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
 export const LOG_IN = gql`
-  mutation requestSecret($email: String!) {
-    requestSecret(email: $email)
+  mutation requestLogin($email: String!, $password: String!) {
+    requestLogin(email: $email, password: $password)
   }
 `;
 
@@ -10,15 +10,9 @@ export const CREATE_ACCOUNT = gql`
   mutation createAccount(
     $username: String!
     $email: String!
-    $firstName: String
-    $lastName: String
+    $password: String!
   ) {
-    createAccount(
-      username: $username
-      email: $email
-      firstName: $firstName
-      lastName: $lastName
-    )
+    createAccount(username: $username, email: $email, password: $password)
   }
 `;
 
@@ -33,3 +27,5 @@ export const LOCAL_LOG_IN = gql`
     logUserIn(token: $token) @client
   }
 `;
+
+// TODO : fix to password to hash value

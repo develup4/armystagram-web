@@ -54,7 +54,7 @@ const PostContainer = ({
   };
 
   const informLoginNeeded = () => {
-    toast.error('로그인이 필요합니다');
+    toast.error('로그인이 필요해요');
   };
 
   // Comment
@@ -70,6 +70,12 @@ const PostContainer = ({
     const { which } = event;
 
     if (which === EnterKey) {
+      if (!isLogin) {
+        toast.error('로그인이 필요해요');
+        comment.setValue('');
+        return;
+      }
+
       event.preventDefault();
       try {
         const {
@@ -80,7 +86,7 @@ const PostContainer = ({
         setSelfComments([...selfComments, addComment]);
         comment.setValue('');
       } catch {
-        toast.error('Cant send comment');
+        toast.error('일시적인 오류가 발생했어요 ㅠ');
       }
     }
   };

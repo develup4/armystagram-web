@@ -1,22 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
-import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo-hooks';
 import { Link, withRouter } from 'react-router-dom';
+import { useQuery } from 'react-apollo-hooks';
+import { IS_LOGIN } from '../Resources/SharedQueries/SharedQueries';
 import { Input, useInput } from './Input';
 import {
+  HomeIcon,
+  HomeEmptyIcon,
   MessageIcon,
-  CompassIcon,
+  MessageEmptyIcon,
+  StarIcon,
+  StarEmptyIcon,
+  HeartIcon,
   HeartEmptyIcon,
   ProfileIcon,
+  ProfileEmptyIcon,
 } from '../Resources/Icons/Icons';
 import logoImage from '../Resources/Images/Logo.png';
-
-const IS_LOGIN = gql`
-  {
-    isLoggedIn @client
-  }
-`;
 
 const Header = styled.header`
   width: 100%;
@@ -82,7 +82,11 @@ const Logo = styled.img`
 `;
 
 export default withRouter(({ history }) => {
-  const { isLogin } = useQuery(IS_LOGIN);
+  const {
+    data: { isLogin },
+  } = useQuery(IS_LOGIN);
+
+  const currentUrl = window.location.href.split('/')[4];
   const searchInput = useInput('');
   const onSearchSubmit = (e) => {
     e.preventDefault();
@@ -107,22 +111,57 @@ export default withRouter(({ history }) => {
           </form>
         </HeaderColumn>
         <HeaderColumn>
-          <HeaderLink to='/message'>
-            <MessageIcon />
+          <HeaderLink to='/'>
+            {currentUrl === '' ? <HomeIcon /> : <HomeEmptyIcon />}
           </HeaderLink>
-          <HeaderLink to='/popular'>
-            <CompassIcon />
-          </HeaderLink>
-          <HeaderLink to='/likes'>
-            <HeartEmptyIcon />
-          </HeaderLink>
+
           {isLogin ? (
-            <HeaderLink to='/profile'>
-              <ProfileIcon />
+            <HeaderLink to='/message'>
+              {currentUrl === 'message' ? (
+                <MessageIcon />
+              ) : (
+                <MessageEmptyIcon />
+              )}
             </HeaderLink>
           ) : (
             <HeaderLink to='/auth'>
-              <ProfileIcon />
+              {currentUrl === 'message' ? (
+                <MessageIcon />
+              ) : (
+                <MessageEmptyIcon />
+              )}
+            </HeaderLink>
+          )}
+
+          <HeaderLink to='/popular'>
+            {currentUrl === 'popular' ? <StarIcon /> : <StarEmptyIcon />}
+          </HeaderLink>
+
+          {isLogin ? (
+            <HeaderLink to='/likes'>
+              {currentUrl === 'likes' ? <HeartIcon /> : <HeartEmptyIcon />}
+            </HeaderLink>
+          ) : (
+            <HeaderLink to='/auth'>
+              {currentUrl === 'likes' ? <HeartIcon /> : <HeartEmptyIcon />}
+            </HeaderLink>
+          )}
+
+          {isLogin ? (
+            <HeaderLink to='/profile'>
+              {currentUrl === 'profile' ? (
+                <ProfileIcon />
+              ) : (
+                <ProfileEmptyIcon />
+              )}
+            </HeaderLink>
+          ) : (
+            <HeaderLink to='/auth'>
+              {currentUrl === 'profile' ? (
+                <ProfileIcon />
+              ) : (
+                <ProfileEmptyIcon />
+              )}
             </HeaderLink>
           )}
         </HeaderColumn>
@@ -130,3 +169,5 @@ export default withRouter(({ history }) => {
     </Header>
   );
 });
+
+// todo : 로고 클릭시 글자 회색등으로 바뀌는등 이펙트

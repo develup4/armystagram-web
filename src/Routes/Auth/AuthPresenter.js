@@ -19,7 +19,7 @@ const Box = styled.div`
   max-width: 350px;
 `;
 
-const StateChanger = styled(Box)`
+const StateChangerWrapper = styled(Box)`
   text-align: center;
   padding: 20px 0px;
 `;
@@ -47,70 +47,95 @@ const Form = styled(Box)`
   }
 `;
 
+const LoginPresenter = ({ email, password, onSubmit }) => (
+  <>
+    <Helmet>
+      <title>Login | Armystagram</title>
+    </Helmet>
+    <form onSubmit={onSubmit}>
+      <Input placeholder={'이메일'} {...email} type='email' />
+      <Input placeholder={'비밀번호'} {...password} type='password' />
+      <Button text={'로그인'} />
+    </form>
+  </>
+);
+
+const SignUpPresenter = ({ username, email, password, onSubmit }) => (
+  <>
+    <Helmet>
+      <title>Sign up | Armystagram</title>
+    </Helmet>
+    <form onSubmit={onSubmit}>
+      <Input placeholder={'이메일'} {...email} type='email' />
+      <Input placeholder={'닉네임'} {...username} />
+      <Input placeholder={'비밀번호'} {...password} type='password' />
+      <Button text={'회원가입'} />
+    </form>
+  </>
+);
+
+const ConfirmPresenter = ({ secret, onSubmit }) => (
+  <>
+    <Helmet>
+      <title>E-Mail confirm | Armystagram</title>
+    </Helmet>
+    <form onSubmit={onSubmit}>
+      <Input
+        placeholder='수신한 이메일의 코드를 입력해주세요'
+        required
+        {...secret}
+      />
+      <Button text={'확인'} />
+    </form>
+  </>
+);
+
+const StateChanger = ({ action, setAction }) => (
+  <StateChangerWrapper>
+    {action === 'LOGIN' ? (
+      <>
+        계정이 없으신가요?{' '}
+        <Link onClick={() => setAction('SIGNUP')}>회원가입</Link>
+      </>
+    ) : (
+      <>
+        이미 계정이 있으신가요?{' '}
+        <Link onClick={() => setAction('LOGIN')}>로그인</Link>
+      </>
+    )}
+  </StateChangerWrapper>
+);
+
 export default ({
   action,
-  username,
-  firstName,
-  lastName,
-  email,
   setAction,
-  onSubmit,
+  username,
+  email,
+  password,
   secret,
+  onSubmit,
 }) => (
   <Wrapper>
     <Form>
-      {action === 'logIn' && (
-        <>
-          <Helmet>
-            <title>Login | Armystagram</title>
-          </Helmet>
-          <form onSubmit={onSubmit}>
-            <Input placeholder={'Email'} {...email} type='email' />
-            <Button text={'Log in'} />
-          </form>
-        </>
+      {action === 'LOGIN' && (
+        <LoginPresenter email={email} password={password} onSubmit={onSubmit} />
       )}
-      {action === 'signUp' && (
-        <>
-          <Helmet>
-            <title>Sign Up | Prismagram</title>
-          </Helmet>
-          <form onSubmit={onSubmit}>
-            <Input placeholder={'First name'} {...firstName} />
-            <Input placeholder={'Last name'} {...lastName} />
-            <Input placeholder={'Email'} {...email} type='email' />
-            <Input placeholder={'Username'} {...username} />
-            <Button text={'Sign up'} />
-          </form>
-        </>
+      {action === 'SIGNUP' && (
+        <SignUpPresenter
+          username={username}
+          email={email}
+          password={password}
+          onSubmit={onSubmit}
+        />
       )}
-      {action === 'confirm' && (
-        <>
-          <Helmet>
-            <title>Confirm Secret | Prismagram</title>
-          </Helmet>
-          <form onSubmit={onSubmit}>
-            <Input placeholder='Paste your secret' required {...secret} />
-            <Button text={'Confirm'} />
-          </form>
-        </>
+      {action === 'CONFIRM' && (
+        <ConfirmPresenter secret={secret} onSubmit={onSubmit} />
       )}
     </Form>
-
-    {action !== 'confirm' && (
-      <StateChanger>
-        {action === 'logIn' ? (
-          <>
-            Don't have an account?{' '}
-            <Link onClick={() => setAction('signUp')}>Sign up</Link>
-          </>
-        ) : (
-          <>
-            Have an account?{' '}
-            <Link onClick={() => setAction('logIn')}>Log in</Link>
-          </>
-        )}
-      </StateChanger>
+    {action !== 'CONFIRM' && (
+      <StateChanger action={action} setAction={setAction} />
     )}
   </Wrapper>
 );
+
+// TODO: KAKAO LOGIN, NAVER LOGIN

@@ -20,6 +20,7 @@ export const SEE_ALL_FEEDS = gql`
         id
         url
       }
+      isLiked
       likeCount
       comments {
         id

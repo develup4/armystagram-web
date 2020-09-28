@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import btsLogo from '../../Resources/Images/BTS_Logo.png';
 
 const MemberPanel = styled.div`
   ${(props) => props.theme.whiteBox};
@@ -24,7 +25,6 @@ const MemberImg = styled.img`
   border-radius: 70%;
   border: 2px solid #dbdbdb;
   border-spacing: 1px;
-  // border-image: radial-gradient(ellipse at 0% 100%, #f00 #00f);
 `;
 // todo : 무지개 테두리
 
@@ -43,7 +43,7 @@ export default ({ loading, data, selectAll, selectMember }) => {
           selectAll();
         }}
       >
-        <MemberImg src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/BTS_logo_%282017%29.png/600px-BTS_logo_%282017%29.png' />
+        <MemberImg src={btsLogo} />
         <NameText>BTS</NameText>
       </Member>
       {!loading &&
@@ -51,7 +51,7 @@ export default ({ loading, data, selectAll, selectMember }) => {
         data.getMembers &&
         data.getMembers.map((member) => (
           <Member
-            key={member.id}
+            key={member.username}
             onClick={() => {
               selectMember(member.posts);
             }}
@@ -65,4 +65,3 @@ export default ({ loading, data, selectAll, selectMember }) => {
 };
 
 // todo : 선택했을때 테두리 색 바뀌도록
-// todo : fix to map key

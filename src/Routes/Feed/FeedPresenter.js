@@ -4,6 +4,9 @@ import { Helmet } from 'rl-react-helmet';
 import Loader from '../../Components/Loader';
 import Post from '../../Components/Post';
 import MemberPanel from '../../Components/MemberPanel';
+import MiniProfile from '../../Components/MiniProfile';
+import UploadPanel from '../../Components/UploadPanel';
+import Filter from '../../Components/Filter';
 import Footer from '../../Components/Footer';
 
 // TODO 피드에서만 헤더가 왼쪽으로 움직임
@@ -20,13 +23,6 @@ const LeftPanel = styled.div`
   flex-direction: column;
 `;
 
-const PostWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 80vh;
-`;
-
 const RightPanel = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,14 +31,15 @@ const RightPanel = styled.div`
   padding-left: 30px;
 `;
 
-const SeeFeedForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 30px;
+const RigitFixedWrapper = styled.div`
+  position: fixed;
 `;
 
-const SeeFeedCheck = styled.div`
+const PostWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
 `;
 
 export default ({ isLogin, loading, posts, setPosts }) => {
@@ -74,26 +71,12 @@ export default ({ isLogin, loading, posts, setPosts }) => {
         </PostWrapper>
       </LeftPanel>
       <RightPanel>
-        <SeeFeedForm>
-          <SeeFeedCheck>
-            <input type='checkbox' name='name' value='a' />
-            <label>Member</label>
-          </SeeFeedCheck>
-          <SeeFeedCheck>
-            <input type='checkbox' name='name' value='a' />
-            <label>Me</label>
-          </SeeFeedCheck>
-          <SeeFeedCheck>
-            <input type='checkbox' name='name' value='a' />
-            <label>Follower</label>
-          </SeeFeedCheck>
-          <SeeFeedCheck>
-            <input type='checkbox' name='name' value='a' />
-            <label>Unfollower</label>
-          </SeeFeedCheck>
-          BUTTON
-        </SeeFeedForm>
-        <Footer />
+        <RigitFixedWrapper>
+          <MiniProfile isLogin={isLogin} />
+          <Filter isLogin={isLogin} />
+          <UploadPanel isLogin={isLogin} />
+          <Footer />
+        </RigitFixedWrapper>
       </RightPanel>
     </Wrapper>
   );

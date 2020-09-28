@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import AuthPresenter from './AuthPresenter';
 import { useInput } from '../../Components/Input';
 import { useMutation } from 'react-apollo-hooks';
@@ -10,104 +11,129 @@ import {
 } from './AuthQueries';
 import { toast } from 'react-toastify';
 
-export default () => {
-  const [action, setAction] = useState('logIn');
+export default withRouter(({ history }) => {
+  // LOGIN, SIGNUP, CONFIRM
+  const [action, setAction] = useState('LOGIN');
+
+  // useInput
   const username = useInput('');
-  const firstName = useInput('');
-  const lastName = useInput('');
   const secret = useInput('');
   const email = useInput('');
-  const requestSecretMutation = useMutation(LOG_IN, {
-    variables: { email: email.value },
+  const password = useInput('');
+
+  // GraphQL
+  const requestLoginMutation = useMutation(LOG_IN, {
+    variables: { email: email.value, password: password.value },
   });
+
   const createAccountMutation = useMutation(CREATE_ACCOUNT, {
     variables: {
       email: email.value,
       username: username.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
+      password: password.value,
     },
   });
+
   const confirmSecretMutation = useMutation(CONFIRM_SECRET, {
     variables: {
       email: email.value,
       secret: secret.value,
     },
   });
+
   const localLogInMutation = useMutation(LOCAL_LOG_IN);
+
+  // Submit function
+  const loginOnSubmit = async () => {
+    if (email.value !== '' && password.value !== '') {
+      try {
+        const { data } = await requestLoginMutation();
+
+        console.log(data);
+
+        if (
+          data &&
+          data !== undefined &&
+          data.requestLogin &&
+          data.requestLogin !== ''
+        ) {
+          localLogInMutation({ variables: { token: data.requestLogin } });
+          history.push('/');
+          window.location.reload();
+        } else {
+          toast.error('로그인에 실패했어요');
+        }
+      } catch (e) {
+        toast.error('일시적인 오류가 발생했어요 ㅠ');
+        toast.error(e.message);
+      }
+    } else {
+      toast.error('빠진 정보가 있어요!');
+    }
+  };
+
+  const signUpOnSubmit = async () => {
+    if (email.value !== '' && username.value !== '' && password.value !== '') {
+      try {
+        const { data } = await createAccountMutation();
+
+        if (data.createAccount !== 'SUCCESS') {
+          toast.error(data.createAccount);
+        } else {
+          toast.success('회원가입 성공! 이메일 인증만 남았어요!');
+          setAction('CONFIRM');
+        }
+      } catch (e) {
+        toast.error('일시적인 오류가 발생했어요 ㅠ');
+        toast.error(e.message);
+      }
+    } else {
+      toast.error('빠진 정보가 있어요!');
+    }
+  };
+
+  const confirmOnSubmit = async () => {
+    if (secret.value !== '') {
+      try {
+        const { data } = await confirmSecretMutation();
+
+        if (data.confirmSecret) {
+          localLogInMutation({ variables: { token: data.confirmSecret } });
+          history.push('/');
+          window.location.reload();
+        } else {
+          toast.error('인증에 실패했어요(시무룩)');
+        }
+      } catch (e) {
+        toast.error('일시적인 오류가 발생했어요 ㅠ');
+        toast.error(e.message);
+      }
+    } else {
+      toast.error('입력한 이메일에서 코드를 찾아보세요!');
+    }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (action === 'logIn') {
-      if (email.value !== '') {
-        try {
-          const {
-            data: { requestSecret },
-          } = await requestSecretMutation();
-          if (!requestSecret) {
-            toast.error('You dont have an account yet, create one');
-            setTimeout(() => setAction('signUp'), 3000);
-          } else {
-            toast.success('Check your inbox for your login secret');
-            setAction('confirm');
-          }
-        } catch {
-          toast.error("Can't request secret, try again");
-        }
-      } else {
-        toast.error('Email is required');
-      }
-    } else if (action === 'signUp') {
-      if (
-        email.value !== '' &&
-        username.value !== '' &&
-        firstName.value !== '' &&
-        lastName.value !== ''
-      ) {
-        try {
-          const {
-            data: { createAccount },
-          } = await createAccountMutation();
-          if (!createAccount) {
-            toast.error("Can't create account");
-          } else {
-            toast.success('Account created! Log In now');
-            setTimeout(() => setAction('logIn'), 3000);
-          }
-        } catch (e) {
-          toast.error(e.message);
-        }
-      } else {
-        toast.error('All field are required');
-      }
-    } else if (action === 'confirm') {
-      if (secret.value !== '') {
-        try {
-          const {
-            data: { confirmSecret: token },
-          } = await confirmSecretMutation();
-          if (token !== '' && token !== undefined) {
-            localLogInMutation({ variables: { token } });
-          } else {
-            throw Error();
-          }
-        } catch {
-          toast.error('Cant confirm secret,check again');
-        }
-      }
+
+    if (action === 'LOGIN') {
+      loginOnSubmit();
+    } else if (action === 'SIGNUP') {
+      signUpOnSubmit();
+    } else if (action === 'CONFIRM') {
+      confirmOnSubmit();
     }
   };
 
   return (
     <AuthPresenter
-      setAction={setAction}
       action={action}
+      setAction={setAction}
       username={username}
-      firstName={firstName}
-      lastName={lastName}
       email={email}
+      password={password}
       secret={secret}
       onSubmit={onSubmit}
     />
   );
-};
+});
