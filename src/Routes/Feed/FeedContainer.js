@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo-hooks';
 import { IS_LOGIN } from '../../Resources/SharedQueries/SharedQueries';
-import { SEE_ALL_FEEDS } from './FeedQueries';
 import FeedPresenter from './FeedPresenter';
 
 export default withRouter(() => {
@@ -10,15 +9,32 @@ export default withRouter(() => {
     data: { isLogin },
   } = useQuery(IS_LOGIN);
 
-  const { data, loading } = useQuery(SEE_ALL_FEEDS);
+  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+
+  // Select query by below states
+  const [selectedMember, setSelectedMember] = useState('');
+  const [filterState, setFilterState] = useState([true, false, false, false]);
+
+  useEffect(() => {
+    setFilterState([true, false, false, false]);
+  }, [selectedMember]);
+
+  useEffect(() => {
+    setSelectedMember('');
+  }, [filterState]);
 
   return (
     <FeedPresenter
       isLogin={isLogin}
       loading={loading}
-      posts={!loading && posts.length === 0 ? data.seeAllFeeds : posts}
+      setLoading={setLoading}
+      posts={posts}
       setPosts={setPosts}
+      selectedMember={selectedMember}
+      setSelectedMember={setSelectedMember}
+      filterState={filterState}
+      setFilterState={setFilterState}
     />
   );
 });

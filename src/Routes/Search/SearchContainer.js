@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import SearchPresenter from './SearchPresenter';
 import { useQuery } from 'react-apollo-hooks';
 import { SEARCH } from './SearchQueries';
+import SearchPresenter from './SearchPresenter';
 
 export default withRouter(({ location: { search } }) => {
   const term = search.split('=')[1];

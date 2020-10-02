@@ -18,13 +18,6 @@ const Title = styled.h1`
   color: #8e8e8e;
 `;
 
-const SeeAll = styled.span`
-  font-size: 5px;
-  font-weight: 900;
-  margin-right: 2px;
-  cursor: pointer;
-`;
-
 const SeeFeedForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -55,26 +48,14 @@ export default ({
   isLogin,
   filterNames,
   filterState,
-  filterEnabled,
   setFilterState,
+  filterDisabled,
   updateByFilter,
 }) => {
   return (
     <FilterWrapper>
       <TitleWrapper>
         <Title>피드 보기</Title>
-        <SeeAll
-          onClick={() => {
-            if (isLogin) {
-              setFilterState([true, true, true, true]);
-            } else {
-              setFilterState([true, true, false, false]);
-            }
-            updateByFilter();
-          }}
-        >
-          모두보기
-        </SeeAll>
       </TitleWrapper>
       <SeeFeedForm>
         {filterNames.map((Filter, index) => (
@@ -84,17 +65,34 @@ export default ({
               name={Filter}
               type='checkbox'
               checked={filterState[index]}
-              disabled={filterEnabled[index]}
+              disabled={filterDisabled[index]}
               onChange={() => {
-                const currentState = filterState;
-                currentState[index] = !currentState[index];
+                if (index === 0) {
+                  if (filterState[0] === true) {
+                    if (isLogin) {
+                      setFilterState([false, false, false, true]);
+                    } else {
+                      setFilterState([false, true, false, false]);
+                    }
+                  } else {
+                    setFilterState([true, false, false, false]);
+                  }
+                } else {
+                  const currentState = filterState;
+                  currentState[index] = !currentState[index];
 
-                setFilterState([
-                  currentState[0],
-                  currentState[1],
-                  currentState[2],
-                  currentState[3],
-                ]);
+                  setFilterState([
+                    currentState[1] === true ||
+                    currentState[2] === true ||
+                    currentState[3] === true
+                      ? false
+                      : true,
+                    currentState[1],
+                    currentState[2],
+                    currentState[3],
+                  ]);
+                }
+
                 updateByFilter();
               }}
             />

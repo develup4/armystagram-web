@@ -8,7 +8,7 @@ import {
   HeartFullIcon,
   HeartEmptyIcon,
   CommentIcon,
-  MessageIcon,
+  MessageEmptyIcon,
 } from '../../Resources/Icons/Icons';
 
 const Post = styled.div`
@@ -152,7 +152,7 @@ export default ({
           <CommentIcon />
         </Button>
         <Button>
-          <MessageIcon />
+          <MessageEmptyIcon />
         </Button>
       </Buttons>
       <FatText text={likeCount === 1 ? '1 like' : `${likeCount} likes`} />

@@ -24,9 +24,17 @@ const MemberImg = styled.img`
   height: 60px;
   border-radius: 70%;
   border: 2px solid #dbdbdb;
-  border-spacing: 1px;
+  padding: 1px;
 `;
-// todo : 무지개 테두리
+
+const SelectedImg = styled(MemberImg)`
+  position: relative;
+  overflow: hidden;
+  transform: rotate(0deg);
+  border: none;
+  padding: 3px;
+  background: -webkit-linear-gradient(left bottom, #f99d4c 0%, #c72d8f 100%);
+`;
 
 const NameText = styled.span`
   margin-top: 2px;
@@ -35,7 +43,7 @@ const NameText = styled.span`
   color: #808080;
 `;
 
-export default ({ loading, data, selectAll, selectMember }) => {
+export default ({ loading, data, selectAll, selectMember, selectedMember }) => {
   return (
     <MemberPanel>
       <Member
@@ -43,7 +51,11 @@ export default ({ loading, data, selectAll, selectMember }) => {
           selectAll();
         }}
       >
-        <MemberImg src={btsLogo} />
+        {selectedMember === 'BTS' ? (
+          <SelectedImg src={btsLogo} />
+        ) : (
+          <MemberImg src={btsLogo} />
+        )}
         <NameText>BTS</NameText>
       </Member>
       {!loading &&
@@ -53,15 +65,17 @@ export default ({ loading, data, selectAll, selectMember }) => {
           <Member
             key={member.username}
             onClick={() => {
-              selectMember(member.posts);
+              selectMember(member);
             }}
           >
-            <MemberImg src={member.profile} />
+            {selectedMember !== member.username ? (
+              <MemberImg src={member.profile} />
+            ) : (
+              <SelectedImg src={member.profile} />
+            )}
             <NameText>{member.username} </NameText>
           </Member>
         ))}
     </MemberPanel>
   );
 };
-
-// todo : 선택했을때 테두리 색 바뀌도록

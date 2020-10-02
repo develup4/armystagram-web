@@ -13,6 +13,12 @@ const Container = styled.button`
   padding: 5px 0px;
   font-size: 12px;
   cursor: pointer;
+  &:active {
+    opacity: 0.5;
+  }
+  :focus {
+    outline: 0;
+  }
 `;
 
 const Button = ({ text, onClick }) => (

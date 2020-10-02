@@ -17,6 +17,7 @@ export const GET_MEMBERS = gql`
           id
           url
         }
+        isLiked
         likeCount
         comments {
           id
@@ -49,6 +50,7 @@ export const SEE_ALL_MEMBER_FEEDS = gql`
         id
         url
       }
+      isLiked
       likeCount
       comments {
         id

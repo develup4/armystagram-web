@@ -49,17 +49,18 @@ export default withRouter(({ history }) => {
       try {
         const { data } = await requestLoginMutation();
 
-        console.log(data);
-
-        if (
-          data &&
-          data !== undefined &&
-          data.requestLogin &&
-          data.requestLogin !== ''
-        ) {
-          localLogInMutation({ variables: { token: data.requestLogin } });
-          history.push('/');
-          window.location.reload();
+        if (data && data !== undefined && data.requestLogin) {
+          if (data.requestLogin === 'FAIL') {
+            toast.error('로그인에 실패했어요');
+          } else if (data.requestLogin === 'NOT_CONFIRM_YET') {
+            toast.error('이메일 인증이 완료되지 않았어요');
+            setAction('CONFIRM');
+            history.push('/auth');
+          } else {
+            localLogInMutation({ variables: { token: data.requestLogin } });
+            history.push('/');
+            window.location.reload();
+          }
         } else {
           toast.error('로그인에 실패했어요');
         }

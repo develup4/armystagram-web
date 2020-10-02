@@ -14,7 +14,6 @@ export default withRouter(({ history }) => {
       <Helmet>
         <title>Message | Armystagram</title>
       </Helmet>
-      <h1>Message</h1>
     </>
   );
 });

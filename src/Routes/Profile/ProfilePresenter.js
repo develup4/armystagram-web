@@ -45,14 +45,6 @@ const Count = styled.li`
   }
 `;
 
-const FullName = styled(FatText)`
-  font-size: 16px;
-`;
-
-const Bio = styled.p`
-  margin: 10px 0px;
-`;
-
 const Posts = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 200px);
@@ -67,22 +59,19 @@ export default ({ loading, data, logOut }) => {
         <Loader />
       </Wrapper>
     );
-  } else if (!loading && data && data.seeUser) {
+  } else if (!loading && data) {
     const {
-      seeUser: {
-        id,
-        profile,
-        username,
-        fullName,
-        isFollowing,
-        isSelf,
-        bio,
-        followingCount,
-        followersCount,
-        postsCount,
-        posts,
-      },
+      id,
+      profile,
+      username,
+      isFollowing,
+      isSelf,
+      followingCount,
+      followersCount,
+      postsCount,
+      posts,
     } = data;
+
     return (
       <Wrapper>
         <Helmet>
@@ -90,7 +79,7 @@ export default ({ loading, data, logOut }) => {
         </Helmet>
         <Header>
           <HeaderColumn>
-            <ProfilePicture size='lg' url={profile} />
+            <ProfilePicture size='large' url={profile} />
           </HeaderColumn>
           <HeaderColumn>
             <UsernameRow>
@@ -112,8 +101,6 @@ export default ({ loading, data, logOut }) => {
                 <FatText text={String(followingCount)} /> following
               </Count>
             </Counts>
-            <FullName text={fullName} />
-            <Bio>{bio}</Bio>
           </HeaderColumn>
         </Header>
         <Posts>

@@ -22,6 +22,7 @@ const ProfileImg = styled.img`
 `;
 
 const ProfileWrapper = styled.div`
+  margin-left: 3px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,6 +42,9 @@ const LoginWrapper = styled.div`
   justify-self: flex-end;
   align-self: center;
   margin-left: 22px;
+  &:active {
+    opacity: 0.7;
+  }
 `;
 
 const MiniProfile = ({ isLogin }) => {

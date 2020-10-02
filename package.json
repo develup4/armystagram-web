@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "@webscopeio/react-textarea-autocomplete": "^4.7.2",
     "apollo-boost": "0.3.1",
     "graphql": "14.1.1",

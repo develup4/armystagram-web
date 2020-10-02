@@ -1,22 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, withRouter } from 'react-router-dom';
-import { useQuery } from 'react-apollo-hooks';
-import { IS_LOGIN } from '../Resources/SharedQueries/SharedQueries';
 import { Input, useInput } from './Input';
-import {
-  HomeIcon,
-  HomeEmptyIcon,
-  MessageIcon,
-  MessageEmptyIcon,
-  StarIcon,
-  StarEmptyIcon,
-  HeartIcon,
-  HeartEmptyIcon,
-  ProfileIcon,
-  ProfileEmptyIcon,
-} from '../Resources/Icons/Icons';
+import { Badge, LinearProgress } from '@material-ui/core';
 import logoImage from '../Resources/Images/Logo.png';
+
+// Icons
+import HomeIcon from '@material-ui/icons/Home';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import TelegramIcon from '@material-ui/icons/Telegram';
+import PersonIcon from '@material-ui/icons/Person';
 
 const Header = styled.header`
   width: 100%;
@@ -27,11 +20,14 @@ const Header = styled.header`
   background-color: white;
   border-bottom: ${(props) => props.theme.boxBorder};
   border-radius: 0px;
+  z-index: 2;
+`;
+
+const HeaderContents = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 7px 0px;
-  z-index: 2;
 `;
 
 const HeaderWrapper = styled.div`
@@ -55,6 +51,15 @@ const HeaderColumn = styled.div`
   }
 `;
 
+const Logo = styled.img`
+  src: url(${(props) => props.src});
+  width: 120px;
+  height: auto;
+  &:active {
+    opacity: 0.7;
+  }
+`;
+
 const SearchInput = styled(Input)`
   background-color: ${(props) => props.theme.bgColor};
   padding: 5px;
@@ -71,22 +76,44 @@ const SearchInput = styled(Input)`
 
 const HeaderLink = styled(Link)`
   &:not(:last-child) {
-    margin-right: 20px;
+    margin-right: 15px;
+  }
+  color: black;
+  cursor: pointer;
+  &:active {
+    opacity: 0.5;
   }
 `;
 
-const Logo = styled.img`
-  src: url(${(props) => props.src});
-  width: 120px;
-  height: auto;
+const AddBadge = styled(Badge)`
+  position: relative;
+  bottom: 4px;
 `;
 
-export default withRouter(({ history }) => {
-  const {
-    data: { isLogin },
-  } = useQuery(IS_LOGIN);
+const HomeButton = styled(HomeIcon)`
+  position: relative;
+  top: 3px;
+`;
 
-  const currentUrl = window.location.href.split('/')[4];
+const MessageButton = styled(TelegramIcon)`
+  position: relative;
+  right: 1px;
+  bottom: 1px;
+`;
+
+const NotificationButton = styled(NotificationsIcon)`
+  position: relative;
+  bottom: 1px;
+  cursor: pointer;
+`;
+
+const ProfileButton = styled(PersonIcon)`
+  position: relative;
+  top: 3px;
+  margin-left: 15px;
+`;
+
+export default withRouter(({ loading, history }) => {
   const searchInput = useInput('');
   const onSearchSubmit = (e) => {
     e.preventDefault();
@@ -95,79 +122,43 @@ export default withRouter(({ history }) => {
 
   return (
     <Header>
-      <HeaderWrapper>
-        <HeaderColumn>
-          <Link to='/'>
-            <Logo src={logoImage} />
-          </Link>
-        </HeaderColumn>
-        <HeaderColumn>
-          <form onSubmit={onSearchSubmit}>
-            <SearchInput
-              value={searchInput.value}
-              onChange={searchInput.onChange}
-              placeholder='❣  검색'
-            />
-          </form>
-        </HeaderColumn>
-        <HeaderColumn>
-          <HeaderLink to='/'>
-            {currentUrl === '' ? <HomeIcon /> : <HomeEmptyIcon />}
-          </HeaderLink>
+      <HeaderContents>
+        <HeaderWrapper>
+          <HeaderColumn>
+            <Link to='/'>
+              <Logo src={logoImage} />
+            </Link>
+          </HeaderColumn>
 
-          {isLogin ? (
+          <HeaderColumn>
+            <form onSubmit={onSearchSubmit}>
+              <SearchInput
+                value={searchInput.value}
+                onChange={searchInput.onChange}
+                placeholder='❣  검색'
+              />
+            </form>
+          </HeaderColumn>
+
+          <HeaderColumn>
+            <HeaderLink to='/'>
+              <HomeButton />
+            </HeaderLink>
             <HeaderLink to='/message'>
-              {currentUrl === 'message' ? (
-                <MessageIcon />
-              ) : (
-                <MessageEmptyIcon />
-              )}
+              <AddBadge color='secondary' variant='dot' badgeContent={1}>
+                <MessageButton />
+              </AddBadge>
             </HeaderLink>
-          ) : (
-            <HeaderLink to='/auth'>
-              {currentUrl === 'message' ? (
-                <MessageIcon />
-              ) : (
-                <MessageEmptyIcon />
-              )}
-            </HeaderLink>
-          )}
-
-          <HeaderLink to='/popular'>
-            {currentUrl === 'popular' ? <StarIcon /> : <StarEmptyIcon />}
-          </HeaderLink>
-
-          {isLogin ? (
-            <HeaderLink to='/likes'>
-              {currentUrl === 'likes' ? <HeartIcon /> : <HeartEmptyIcon />}
-            </HeaderLink>
-          ) : (
-            <HeaderLink to='/auth'>
-              {currentUrl === 'likes' ? <HeartIcon /> : <HeartEmptyIcon />}
-            </HeaderLink>
-          )}
-
-          {isLogin ? (
+            <AddBadge color='secondary' variant='dot' badgeContent={1}>
+              <NotificationButton />
+            </AddBadge>
             <HeaderLink to='/profile'>
-              {currentUrl === 'profile' ? (
-                <ProfileIcon />
-              ) : (
-                <ProfileEmptyIcon />
-              )}
+              <ProfileButton />
             </HeaderLink>
-          ) : (
-            <HeaderLink to='/auth'>
-              {currentUrl === 'profile' ? (
-                <ProfileIcon />
-              ) : (
-                <ProfileEmptyIcon />
-              )}
-            </HeaderLink>
-          )}
-        </HeaderColumn>
-      </HeaderWrapper>
+          </HeaderColumn>
+        </HeaderWrapper>
+      </HeaderContents>
+      {loading ? <LinearProgress color='secondary' /> : <></>}
     </Header>
   );
 });
-
-// todo : 로고 클릭시 글자 회색등으로 바뀌는등 이펙트

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'rl-react-helmet';
-import Loader from '../../Components/Loader';
+import Header from '../../Components/Header';
 import Post from '../../Components/Post';
 import MemberPanel from '../../Components/MemberPanel';
 import MiniProfile from '../../Components/MiniProfile';
@@ -12,6 +12,9 @@ import Footer from '../../Components/Footer';
 // TODO 피드에서만 헤더가 왼쪽으로 움직임
 
 const Wrapper = styled.div`
+  margin: 0 auto;
+  max-width: ${(props) => props.theme.maxWidth};
+  width: 100%;
   padding: 0px;
   display: flex;
   justify-content: space-around;
@@ -42,42 +45,64 @@ const PostWrapper = styled.div`
   min-height: 80vh;
 `;
 
-export default ({ isLogin, loading, posts, setPosts }) => {
+export default ({
+  isLogin,
+  loading,
+  setLoading,
+  posts,
+  setPosts,
+  selectedMember,
+  setSelectedMember,
+  filterState,
+  setFilterState,
+}) => {
   return (
-    <Wrapper>
-      <Helmet>
-        <title>Feed | Armystagram</title>
-      </Helmet>
-      <LeftPanel>
-        <MemberPanel setPosts={setPosts}></MemberPanel>
-        <PostWrapper>
-          {loading && <Loader />}
-          {!loading &&
-            posts &&
-            posts.map((post) => (
-              <Post
-                isLogin={isLogin}
-                key={post.id}
-                id={post.id}
-                caption={post.caption}
-                user={post.user}
-                files={post.files}
-                likeCount={post.likeCount}
-                isLiked={isLogin ? post.isLiked : false}
-                comments={post.comments}
-                createdAt={post.createdAt}
-              />
-            ))}
-        </PostWrapper>
-      </LeftPanel>
-      <RightPanel>
-        <RigitFixedWrapper>
-          <MiniProfile isLogin={isLogin} />
-          <Filter isLogin={isLogin} />
-          <UploadPanel isLogin={isLogin} />
-          <Footer />
-        </RigitFixedWrapper>
-      </RightPanel>
-    </Wrapper>
+    <>
+      <Header loading={loading} />
+      <Wrapper>
+        <Helmet>
+          <title>Feed | Armystagram</title>
+        </Helmet>
+        <LeftPanel>
+          <MemberPanel
+            setPosts={setPosts}
+            setLoading={setLoading}
+            selectedMember={selectedMember}
+            setSelectedMember={setSelectedMember}
+          />
+          <PostWrapper>
+            {!loading &&
+              posts &&
+              posts.map((post) => (
+                <Post
+                  isLogin={isLogin}
+                  key={post.id}
+                  id={post.id}
+                  caption={post.caption}
+                  user={post.user}
+                  files={post.files}
+                  likeCount={post.likeCount}
+                  isLiked={isLogin ? post.isLiked : false}
+                  comments={post.comments}
+                  createdAt={post.createdAt}
+                />
+              ))}
+          </PostWrapper>
+        </LeftPanel>
+        <RightPanel>
+          <RigitFixedWrapper>
+            <MiniProfile isLogin={isLogin} />
+            <Filter
+              isLogin={isLogin}
+              setLoading={setLoading}
+              filterState={filterState}
+              setFilterState={setFilterState}
+            />
+            <UploadPanel isLogin={isLogin} />
+            <Footer />
+          </RigitFixedWrapper>
+        </RightPanel>
+      </Wrapper>
+    </>
   );
 };
