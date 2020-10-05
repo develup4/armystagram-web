@@ -8,8 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Feed from './Routes/Feed';
 import Search from './Routes/Search';
 import Message from './Routes/Message';
-import Popular from './Routes/Popular';
-import Likes from './Routes/Likes';
 import Auth from './Routes/Auth';
 import { Profile, OtherProfile } from './Routes/Profile/Profile';
 
@@ -23,8 +21,6 @@ export default () => {
             <Route exact path='/' component={Feed} />
             <Route path='/search' component={Search} />
             <Route path='/message' component={Message} />
-            <Route path='/popular' component={Popular} />
-            <Route path='/likes' component={Likes} />
             <Route path='/auth' component={Auth} />
             <Route path='/profile' component={Profile} />
             <Route path='/:username' component={OtherProfile} />

@@ -135,16 +135,7 @@ export default ({ isLogin, addHashtag }) => {
         <input type='radio' value='option3' disabled={true} />
         <Label>슬라이드</Label>
       </RadioWrapper>
-      <UploadImageWrapper>
-        <UploadImage src={''} />
-        <UploadImage src={''} />
-        <UploadImage src={''} />
-      </UploadImageWrapper>
+      <UploadImageWrapper></UploadImageWrapper>
     </UploadPanel>
   );
 };
-
-// TODO : 해쉬태그 추가시 아래에 파란색으로 추가하도록(state에도 저장해서 업로드할수있도록 하자)
-// TODO : RIGHT PANAL은 스크롤 안되도록
-// todo : 비로그인시 업로드버튼 비활성화
-// 사진추가버튼

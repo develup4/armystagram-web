@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, withRouter } from 'react-router-dom';
 import { Input, useInput } from './Input';
-import { Badge, LinearProgress } from '@material-ui/core';
+import { Badge, LinearProgress, Tooltip } from '@material-ui/core';
 import logoImage from '../Resources/Images/Logo.png';
 
 // Icons
@@ -142,23 +142,31 @@ export default withRouter(({ loading, history }) => {
 
           <HeaderColumn>
             <HeaderLink to='/'>
-              <HomeButton />
+              <Tooltip title='홈으로'>
+                <HomeButton />
+              </Tooltip>
             </HeaderLink>
             <HeaderLink to='/message'>
               <AddBadge color='secondary' variant='dot' badgeContent={1}>
-                <MessageButton />
+                <Tooltip title='다이렉트 메시지'>
+                  <MessageButton />
+                </Tooltip>
               </AddBadge>
             </HeaderLink>
             <AddBadge color='secondary' variant='dot' badgeContent={1}>
-              <NotificationButton />
+              <Tooltip title='알림'>
+                <NotificationButton />
+              </Tooltip>
             </AddBadge>
             <HeaderLink to='/profile'>
-              <ProfileButton />
+              <Tooltip title='프로필'>
+                <ProfileButton />
+              </Tooltip>
             </HeaderLink>
           </HeaderColumn>
         </HeaderWrapper>
       </HeaderContents>
-      {loading ? <LinearProgress color='secondary' /> : <></>}
+      {loading && <LinearProgress color='secondary' />}
     </Header>
   );
 });

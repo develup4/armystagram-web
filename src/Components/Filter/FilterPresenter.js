@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Tooltip } from '@material-ui/core';
 
 const FilterWrapper = styled.div`
   margin-left: 5px;
@@ -30,6 +31,13 @@ const SeeFeedCheck = styled.div`
   align-items: center;
 `;
 
+const SeeAll = styled.span`
+  font-size: 5px;
+  font-weight: 900;
+  margin-right: 2px;
+  cursor: pointer;
+`;
+
 const Checkbox = styled.input`
   display: inline-block;
   width: 17px;
@@ -47,20 +55,31 @@ const Label = styled.label`
 export default ({
   isLogin,
   filterNames,
+  filterExplains,
   filterState,
   setFilterState,
   filterDisabled,
-  updateByFilter,
 }) => {
   return (
     <FilterWrapper>
       <TitleWrapper>
         <Title>피드 보기</Title>
+        <Tooltip title='처음 접속시 이 설정으로 시작할 수 있어요'>
+          <SeeAll
+            onClick={() => {
+              // todo
+            }}
+          >
+            기본설정
+          </SeeAll>
+        </Tooltip>
       </TitleWrapper>
       <SeeFeedForm>
         {filterNames.map((Filter, index) => (
           <SeeFeedCheck key={index}>
-            <Label>{Filter}</Label>
+            <Tooltip title={filterExplains[index]} placement='right-start'>
+              <Label>{Filter}</Label>
+            </Tooltip>
             <Checkbox
               name={Filter}
               type='checkbox'
@@ -92,8 +111,6 @@ export default ({
                     currentState[3],
                   ]);
                 }
-
-                updateByFilter();
               }}
             />
           </SeeFeedCheck>

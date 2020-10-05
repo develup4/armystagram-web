@@ -1,7 +1,8 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import { Input } from '../../Components/Input';
+import Header from '../../Components/Header';
 import Button from '../../Components/Button/Button';
 
 const Wrapper = styled.div`
@@ -49,6 +50,7 @@ const Form = styled(Box)`
 
 const LoginPresenter = ({ email, password, onSubmit }) => (
   <>
+    <Header loading={false} />
     <Helmet>
       <title>Login | Armystagram</title>
     </Helmet>

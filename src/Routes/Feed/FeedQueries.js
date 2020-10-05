@@ -6,53 +6,44 @@ export const IS_LOGIN = gql`
   }
 `;
 
-export const SEE_ALL_FEEDS = gql`
-  {
-    seeAllFeeds {
+export const SEE_FILTERED_POSTS = gql`
+  query seeFilteredPosts(
+    $all: Boolean!
+    $popular: Boolean!
+    $liked: Boolean!
+    $follower: Boolean!
+    $member: Boolean!
+    $memberName: String
+  ) {
+    seeFilteredPosts(
+      all: $all
+      popular: $popular
+      liked: $liked
+      follower: $follower
+      member: $member
+      memberName: $memberName
+    ) {
       id
       caption
       user {
         id
         profile
         username
+        isFollowing
       }
       files {
         id
         url
       }
-      isLiked
-      likeCount
-      comments {
-        id
-        text
+      likes {
         user {
-          id
+          isMember
           username
+          profile
         }
       }
-      createdAt
-    }
-  }
-`;
-
-// TODO : FIX TO FOLLOWER + MEMBER
-export const FEED_QUERY = gql`
-  {
-    seeFeed {
-      id
-      location
-      caption
-      user {
-        id
-        profile
-        username
-      }
-      files {
-        id
-        url
-      }
-      likeCount
       isLiked
+      likeCount
       comments {
         id
         text

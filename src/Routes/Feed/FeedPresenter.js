@@ -8,6 +8,7 @@ import MiniProfile from '../../Components/MiniProfile';
 import UploadPanel from '../../Components/UploadPanel';
 import Filter from '../../Components/Filter';
 import Footer from '../../Components/Footer';
+import { Skeleton } from '../../Components/Post/Skeleton';
 
 // TODO 피드에서만 헤더가 왼쪽으로 움직임
 
@@ -48,14 +49,13 @@ const PostWrapper = styled.div`
 export default ({
   isLogin,
   loading,
-  setLoading,
   posts,
-  setPosts,
   selectedMember,
   setSelectedMember,
   filterState,
   setFilterState,
 }) => {
+  console.log(posts);
   return (
     <>
       <Header loading={loading} />
@@ -65,12 +65,11 @@ export default ({
         </Helmet>
         <LeftPanel>
           <MemberPanel
-            setPosts={setPosts}
-            setLoading={setLoading}
             selectedMember={selectedMember}
             setSelectedMember={setSelectedMember}
           />
           <PostWrapper>
+            {loading && <Skeleton />}
             {!loading &&
               posts &&
               posts.map((post) => (
@@ -81,6 +80,7 @@ export default ({
                   caption={post.caption}
                   user={post.user}
                   files={post.files}
+                  likes={post.likes}
                   likeCount={post.likeCount}
                   isLiked={isLogin ? post.isLiked : false}
                   comments={post.comments}
@@ -94,7 +94,6 @@ export default ({
             <MiniProfile isLogin={isLogin} />
             <Filter
               isLogin={isLogin}
-              setLoading={setLoading}
               filterState={filterState}
               setFilterState={setFilterState}
             />

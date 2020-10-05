@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useInput } from '../Input';
 import { useMutation } from 'react-apollo-hooks';
+import { FOLLOW } from '../../Resources/SharedQueries/SharedQueries';
 import { TOGGLE_LIKE, ADD_COMMENT } from './PostQueries';
 import { toast } from 'react-toastify';
 import PostPresenter from './PostPresenter';
@@ -12,6 +13,7 @@ const PostContainer = ({
   user,
   caption,
   files,
+  likes,
   likeCount,
   isLiked,
   comments,
@@ -19,14 +21,7 @@ const PostContainer = ({
 }) => {
   // Image slide => tODO : NEED TO CHANGE
   const [currentItem, setCurrentItem] = useState(0);
-  const slide = () => {
-    const totalFiles = files.length;
-    if (currentItem === totalFiles - 1) {
-      setTimeout(() => setCurrentItem(0), 3000);
-    } else {
-      setTimeout(() => setCurrentItem(currentItem + 1), 3000);
-    }
-  };
+  const slide = () => {};
 
   useEffect(() => {
     slide();
@@ -91,25 +86,59 @@ const PostContainer = ({
     }
   };
 
+  const mergedComments = [...comments, ...selfComments];
+
+  // Follow button
+  const followMutation = useMutation(FOLLOW, { variables: { id: user.id } });
+  const follow = () => {
+    followMutation();
+    user.isFollowing = true;
+    toast.success(`${user.username} 님을 팔로우했어요!`);
+  };
+
+  // Fold comment
+  const [foldComments, setFoldComments] = useState(true);
+  const toggleFold = () => {
+    setFoldComments(!foldComments);
+  };
+
+  // View tyle
+  const [viewType, setViewType] = useState('SINGLE');
+  const toggleView = () => {
+    if (viewType === 'SLIDE') {
+      setViewType('GRID');
+    } else if (viewType === 'GRID') {
+      setViewType('SLIDE');
+    }
+  };
+
   return (
     <PostPresenter
+      isLogin={isLogin}
       user={user}
       caption={caption}
+      follow={follow}
       files={files}
       currentItem={currentItem}
+      likes={likes}
       isLiked={isLikedState}
       likeCount={likeCountState}
       toggleLike={isLogin ? toggleLike : informLoginNeeded}
-      comments={comments}
+      mergedComments={mergedComments}
       newComment={comment}
-      selfComments={selfComments}
       onKeyPress={onKeyPress}
       createdAt={createdAt}
+      foldComments={foldComments}
+      toggleFold={toggleFold}
+      viewType={viewType}
+      setViewType={setViewType}
+      toggleView={toggleView}
     />
   );
 };
 
 PostContainer.propTypes = {
+  isLogin: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -120,6 +149,15 @@ PostContainer.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  likes: PropTypes.arrayOf(
+    PropTypes.shape({
+      user: PropTypes.shape({
+        isMember: PropTypes.bool.isRequired,
+        username: PropTypes.string.isRequired,
+        profile: PropTypes.string.isRequired,
+      }).isRequired,
     })
   ).isRequired,
   likeCount: PropTypes.number.isRequired,

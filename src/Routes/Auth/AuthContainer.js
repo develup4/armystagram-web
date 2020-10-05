@@ -9,6 +9,7 @@ import {
   CONFIRM_SECRET,
   LOCAL_LOG_IN,
 } from './AuthQueries';
+import sha256 from 'sha256';
 import { toast } from 'react-toastify';
 
 export default withRouter(({ history }) => {
@@ -23,7 +24,10 @@ export default withRouter(({ history }) => {
 
   // GraphQL
   const requestLoginMutation = useMutation(LOG_IN, {
-    variables: { email: email.value, password: password.value },
+    variables: {
+      email: email.value,
+      password: sha256(password.value + 'develup4'),
+    },
   });
 
   const createAccountMutation = useMutation(CREATE_ACCOUNT, {

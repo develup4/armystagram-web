@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo-hooks';
 import { IS_LOGIN } from '../../Resources/SharedQueries/SharedQueries';
+import { SEE_FILTERED_POSTS } from './FeedQueries';
 import FeedPresenter from './FeedPresenter';
 
 export default withRouter(() => {
@@ -9,28 +10,68 @@ export default withRouter(() => {
     data: { isLogin },
   } = useQuery(IS_LOGIN);
 
-  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
   // Select query by below states
   const [selectedMember, setSelectedMember] = useState('');
   const [filterState, setFilterState] = useState([true, false, false, false]);
 
-  useEffect(() => {
-    setFilterState([true, false, false, false]);
-  }, [selectedMember]);
+  // SEE_MEMBER_POSTS
+  const { data: memberPosts, loading: loadingMemberPosts } = useQuery(
+    SEE_FILTERED_POSTS,
+    {
+      variables: {
+        all: false,
+        popular: false,
+        liked: false,
+        follower: false,
+        member: true,
+        memberName: selectedMember,
+      },
+      skip: selectedMember === '',
+    }
+  );
 
   useEffect(() => {
-    setSelectedMember('');
-  }, [filterState]);
+    if (!loadingMemberPosts && memberPosts) {
+      setPosts(memberPosts.seeFilteredPosts);
+      setFilterState([false, false, false, false]);
+      window.scrollTo(0, 0);
+    }
+  }, [loadingMemberPosts, memberPosts]);
+
+  // SEE_FILTERED_POSTS
+  const { data: filteredPosts, loading: loadingFilteredPosts } = useQuery(
+    SEE_FILTERED_POSTS,
+    {
+      variables: {
+        all: filterState[0],
+        popular: filterState[1],
+        liked: filterState[2],
+        follower: filterState[3],
+        member: false,
+      },
+      skip:
+        filterState[0] === false &&
+        filterState[1] === false &&
+        filterState[2] === false &&
+        filterState[3] === false,
+    }
+  );
+
+  useEffect(() => {
+    if (!loadingFilteredPosts && filteredPosts) {
+      setPosts(filteredPosts.seeFilteredPosts);
+      setSelectedMember('');
+      window.scrollTo(0, 0);
+    }
+  }, [loadingFilteredPosts, filteredPosts]);
 
   return (
     <FeedPresenter
       isLogin={isLogin}
-      loading={loading}
-      setLoading={setLoading}
+      loading={loadingMemberPosts || loadingFilteredPosts}
       posts={posts}
-      setPosts={setPosts}
       selectedMember={selectedMember}
       setSelectedMember={setSelectedMember}
       filterState={filterState}
@@ -38,5 +79,3 @@ export default withRouter(() => {
     />
   );
 });
-
-// TODO : FEED에서 FEED로 라우트시 스테이트 유지해서 씨올피드가 안나옴(아미스타그램을 누를때)

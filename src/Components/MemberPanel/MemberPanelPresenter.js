@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import btsLogo from '../../Resources/Images/BTS_Logo.png';
 
 const MemberPanel = styled.div`
@@ -18,22 +18,51 @@ const Member = styled.span`
   align-items: center;
 `;
 
+const gradient = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const gradient_inverse = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+`;
+
 const MemberImg = styled.img`
   src: url(${(props) => props.src});
   width: 60px;
   height: 60px;
   border-radius: 70%;
-  border: 2px solid #dbdbdb;
+  border: 3px solid #dbdbdb;
   padding: 1px;
 `;
 
-const SelectedImg = styled(MemberImg)`
-  position: relative;
-  overflow: hidden;
-  transform: rotate(0deg);
-  border: none;
-  padding: 3px;
+const SelectedImg = styled.img`
+  src: url(${(props) => props.src});
+  width: 60px;
+  height: 60px;
+  border-radius: 70%;
+  padding: 1px;
+  animation: ${gradient_inverse} 1s linear infinite;
+`;
+
+const Selected = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 70%;
   background: -webkit-linear-gradient(left bottom, #f99d4c 0%, #c72d8f 100%);
+  animation: ${gradient} 1s linear infinite;
 `;
 
 const NameText = styled.span`
@@ -43,16 +72,18 @@ const NameText = styled.span`
   color: #808080;
 `;
 
-export default ({ loading, data, selectAll, selectMember, selectedMember }) => {
+export default ({ loading, data, selectedMember, setSelectedMember }) => {
   return (
     <MemberPanel>
       <Member
         onClick={() => {
-          selectAll();
+          setSelectedMember('BTS');
         }}
       >
         {selectedMember === 'BTS' ? (
-          <SelectedImg src={btsLogo} />
+          <Selected>
+            <SelectedImg src={btsLogo} />
+          </Selected>
         ) : (
           <MemberImg src={btsLogo} />
         )}
@@ -65,13 +96,15 @@ export default ({ loading, data, selectAll, selectMember, selectedMember }) => {
           <Member
             key={member.username}
             onClick={() => {
-              selectMember(member);
+              setSelectedMember(member.username);
             }}
           >
             {selectedMember !== member.username ? (
               <MemberImg src={member.profile} />
             ) : (
-              <SelectedImg src={member.profile} />
+              <Selected>
+                <SelectedImg src={member.profile} />
+              </Selected>
             )}
             <NameText>{member.username} </NameText>
           </Member>

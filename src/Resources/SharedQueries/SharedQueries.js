@@ -21,3 +21,9 @@ export const ME = gql`
     }
   }
 `;
+
+export const FOLLOW = gql`
+  mutation follow($id: String!) {
+    follow(id: $id)
+  }
+`;

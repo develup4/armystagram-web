@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export const useInput = (defaultValue) => {
+export const useInput = (defaultValue, maxLength = 0) => {
   const [value, setValue] = useState(defaultValue);
 
   const onChange = (e) => {
     const {
       target: { value },
     } = e;
+
+    if (maxLength !== 0 && value.length > maxLength) {
+      return;
+    }
     setValue(value);
   };
 
