@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useInput } from '../Input';
 import { useMutation } from 'react-apollo-hooks';
@@ -19,14 +19,6 @@ const PostContainer = ({
   comments,
   createdAt,
 }) => {
-  // Image slide => tODO : NEED TO CHANGE
-  const [currentItem, setCurrentItem] = useState(0);
-  const slide = () => {};
-
-  useEffect(() => {
-    slide();
-  }, [currentItem]);
-
   // Like
   const [isLikedState, setIsLiked] = useState(isLiked);
   const [likeCountState, setLikeCount] = useState(likeCount);
@@ -71,6 +63,10 @@ const PostContainer = ({
         return;
       }
 
+      if (comment.value === '') {
+        return;
+      }
+
       event.preventDefault();
       try {
         const {
@@ -83,6 +79,30 @@ const PostContainer = ({
       } catch {
         toast.error('일시적인 오류가 발생했어요 ㅠ');
       }
+    }
+  };
+
+  const onSubmit = async () => {
+    if (!isLogin) {
+      toast.error('로그인이 필요해요');
+      comment.setValue('');
+      return;
+    }
+
+    if (comment.value === '') {
+      return;
+    }
+
+    try {
+      const {
+        data: { addComment },
+      } = await addCommentMutation();
+
+      // Comment display is updated locally
+      setSelfComments([...selfComments, addComment]);
+      comment.setValue('');
+    } catch {
+      toast.error('일시적인 오류가 발생했어요 ㅠ');
     }
   };
 
@@ -119,7 +139,6 @@ const PostContainer = ({
       caption={caption}
       follow={follow}
       files={files}
-      currentItem={currentItem}
       likes={likes}
       isLiked={isLikedState}
       likeCount={likeCountState}
@@ -127,6 +146,7 @@ const PostContainer = ({
       mergedComments={mergedComments}
       newComment={comment}
       onKeyPress={onKeyPress}
+      onSubmit={onSubmit}
       createdAt={createdAt}
       foldComments={foldComments}
       toggleFold={toggleFold}

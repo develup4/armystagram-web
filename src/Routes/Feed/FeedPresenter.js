@@ -55,7 +55,6 @@ export default ({
   filterState,
   setFilterState,
 }) => {
-  console.log(posts);
   return (
     <>
       <Header loading={loading} />

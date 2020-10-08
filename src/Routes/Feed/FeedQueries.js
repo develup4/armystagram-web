@@ -30,6 +30,7 @@ export const SEE_FILTERED_POSTS = gql`
         profile
         username
         isFollowing
+        isMember
       }
       files {
         id
@@ -50,6 +51,7 @@ export const SEE_FILTERED_POSTS = gql`
         user {
           id
           username
+          isMember
         }
       }
       createdAt

@@ -64,13 +64,17 @@ export default ({
     <FilterWrapper>
       <TitleWrapper>
         <Title>피드 보기</Title>
-        <Tooltip title='처음 접속시 이 설정으로 시작할 수 있어요'>
+        <Tooltip
+          title='보고싶은 게시물을 설정할 수 있어요'
+          placement='top'
+          arrow
+        >
           <SeeAll
             onClick={() => {
               // todo
             }}
           >
-            기본설정
+            필터설정
           </SeeAll>
         </Tooltip>
       </TitleWrapper>

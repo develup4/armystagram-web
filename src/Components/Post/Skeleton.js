@@ -102,11 +102,6 @@ const MessageIcon = styled(TelegramIcon)`
   color: black;
 `;
 
-const LikeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const Divide = styled.div`
   margin: 12px 0px;
 `;

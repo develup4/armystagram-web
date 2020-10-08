@@ -15,6 +15,7 @@ import {
   GridListTile,
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import InfluencerIcon from '../../Resources/Images/Influencer.png';
 
 // Icons
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -46,8 +47,29 @@ const ProfileWrapper = styled.div`
   display: flex;
 `;
 
+const ProfilePic = styled(ProfilePicture)`
+  border: 1px solid #dbdbdb;
+`;
+
 const UserColumn = styled.div`
   margin-left: 10px;
+`;
+
+const NameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const InfluencerComment = styled.img`
+  margin-right: 5px;
+  width: 12px;
+  height: 12px;
+  background: white;
+`;
+
+const InfluencerBadge = styled(InfluencerComment)`
+  margin-left: 2px;
+  margin-bottom: 2px;
 `;
 
 const PictureCount = styled.span`
@@ -82,8 +104,6 @@ const File = styled.div`
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
-  opacity: ${(props) => (props.showing ? 1 : 0)};
-  transition: opacity 0.5s linear;
 `;
 
 const Meta = styled.div`
@@ -184,6 +204,24 @@ const Timestamp = styled.span`
   border-bottom: ${(props) => props.theme.lightGreyColor} 1px solid;
 `;
 
+const CommentText = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const NonSubmit = styled.span`
+  width: 30px;
+  color: ${(props) => props.theme.lightGreyColor};
+  cursor: pointer;
+`;
+
+const Submit = styled.span`
+  width: 30px;
+  color: ${(props) => props.theme.blueColor};
+  cursor: pointer;
+`;
+
 const Textarea = styled(TextareaAutosize)`
   border: none;
   width: 100%;
@@ -196,11 +234,10 @@ const Textarea = styled(TextareaAutosize)`
 
 export default ({
   isLogin,
-  user: { username, profile, isFollowing },
+  user: { username, profile, isFollowing, isMember },
   caption,
   files,
   follow,
-  currentItem,
   likes,
   isLiked,
   likeCount,
@@ -208,6 +245,7 @@ export default ({
   mergedComments,
   newComment,
   onKeyPress,
+  onSubmit,
   createdAt,
   foldComments,
   toggleFold,
@@ -219,7 +257,7 @@ export default ({
   const foldCommentNumber = 4;
 
   // Initate view type
-  if (files.length > 1 && viewType == 'SINGLE') {
+  if (files.length > 1 && viewType === 'SINGLE') {
     setViewType('SLIDE');
   }
 
@@ -227,11 +265,14 @@ export default ({
     <Post>
       <Header>
         <ProfileWrapper>
-          <ProfilePicture size='small' url={profile} />
+          <ProfilePic size='small' url={profile} />
           <UserColumn>
-            <Link to={`/${username}`}>
-              <FatText text={username} />
-            </Link>
+            <NameWrapper>
+              <Link to={`/${username}`}>
+                <FatText text={username} />
+              </Link>
+              {isMember && <InfluencerBadge src={InfluencerIcon} />}
+            </NameWrapper>
             <PictureCount>
               {files.length === 1 ? '1 picture' : `${files.length} pictures`}
             </PictureCount>
@@ -246,7 +287,7 @@ export default ({
 
       {viewType === 'SINGLE' && files && (
         <Files>
-          <File key={files[0].id} src={files[0].url} showing={true} />
+          <File key={files[0].id} src={files[0].url} />
         </Files>
       )}
       {viewType === 'SLIDE' && (
@@ -259,10 +300,19 @@ export default ({
         />
       )}
       {viewType === 'GRID' && (
-        <GridList cellHeight={160} className={classes.gridList} cols={2}>
+        <GridList
+          cellHeight={220}
+          className={classes.gridList}
+          cols={3}
+          rows={3}
+        >
           {files.map((file, index) => (
-            <GridListTile key={file.id} cols={1} row={index === 1 ? 2 : 1}>
-              <img src={file.url} />
+            <GridListTile
+              key={file.id}
+              cols={index % 3 === 0 ? 2 : 1}
+              rows={index % 3 === 0 ? 2 : 1}
+            >
+              <img src={file.url} alt={'grid'} />
             </GridListTile>
           ))}
         </GridList>
@@ -331,9 +381,13 @@ export default ({
         </Caption>
 
         {mergedComments.length > foldCommentNumber ? (
-          <FoldComment onClick={toggleFold}>
-            댓글 {mergedComments.length}개 모두 보기
-          </FoldComment>
+          foldComments === true ? (
+            <FoldComment onClick={toggleFold}>
+              댓글 {mergedComments.length}개 모두 보기
+            </FoldComment>
+          ) : (
+            <FoldComment onClick={toggleFold}>댓글 닫기</FoldComment>
+          )
         ) : (
           mergedComments.length > 0 && <Divider />
         )}
@@ -347,6 +401,9 @@ export default ({
                   !foldComments) && (
                   <Comment key={comment.id}>
                     <FatText text={comment.user.username} />
+                    {comment.user.isMember && (
+                      <InfluencerComment src={InfluencerIcon} />
+                    )}
                     {comment.text}
                   </Comment>
                 )
@@ -357,13 +414,19 @@ export default ({
         <Timestamp>{`${createdAt.split('T')[0]} ${
           createdAt.split('T')[1].split('.')[0]
         }`}</Timestamp>
-
-        <Textarea
-          onKeyPress={onKeyPress}
-          placeholder={'댓글 달기...'}
-          value={newComment.value}
-          onChange={newComment.onChange}
-        />
+        <CommentText>
+          <Textarea
+            onKeyPress={onKeyPress}
+            placeholder={'댓글 달기...'}
+            value={newComment.value}
+            onChange={newComment.onChange}
+          />
+          {newComment.value === '' ? (
+            <NonSubmit>게시</NonSubmit>
+          ) : (
+            <Submit onClick={onSubmit}>게시</Submit>
+          )}
+        </CommentText>
       </Meta>
     </Post>
   );
