@@ -6,7 +6,7 @@ import { useMutation } from 'react-apollo-hooks';
 import { useInput } from '../Input';
 import { toast } from 'react-toastify';
 
-const UploadPanelContainer = ({ isLogin, setMutationLoading }) => {
+const UploadPanelContainer = ({ isLogin, loading, setMutationLoading }) => {
   const caption = useInput('');
   const [hashtags, setHashtags] = useState([]);
 
@@ -43,6 +43,11 @@ const UploadPanelContainer = ({ isLogin, setMutationLoading }) => {
   };
 
   const onUpload = async () => {
+    // Prevent to overlap(double click)
+    if (loading) {
+      return;
+    }
+
     if (!isLogin) {
       toast.error('로그인을 해야해요');
       return;

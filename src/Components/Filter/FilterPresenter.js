@@ -42,10 +42,10 @@ const Checkbox = styled.input`
   display: inline-block;
   width: 17px;
   height: 17px;
-  background: #fd2467;
   cursor: pointer;
   border-radius: 3px;
 `;
+// TODO : EDGE COLOR GREY
 
 const Label = styled.label`
   font-size: 12px;

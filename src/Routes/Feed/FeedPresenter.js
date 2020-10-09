@@ -99,6 +99,7 @@ export default ({
             />
             <UploadPanel
               isLogin={isLogin}
+              loading={loading}
               setMutationLoading={setMutationLoading}
             />
             <Footer />
