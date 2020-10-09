@@ -60,7 +60,7 @@ const UploadPanelContainer = ({ isLogin }) => {
 
     axios({
       method: 'POST',
-      url: 'http://localhost:4000/api/upload',
+      url: 'https://armystagram-backend.herokuapp.com/api/upload',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
