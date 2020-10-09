@@ -58,6 +58,7 @@ const UserColumn = styled.div`
 const NameWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 1px;
 `;
 
 const InfluencerComment = styled.img`
@@ -74,7 +75,7 @@ const InfluencerBadge = styled(InfluencerComment)`
 
 const PictureCount = styled.span`
   display: block;
-  margin-top: 5px;
+  margin-top: 2px;
   font-size: 7px;
 `;
 

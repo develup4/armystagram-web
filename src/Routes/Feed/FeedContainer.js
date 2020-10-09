@@ -10,6 +10,7 @@ export default withRouter(() => {
     data: { isLogin },
   } = useQuery(IS_LOGIN);
 
+  const [mutationLoading, setMutationLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
   // Select query by below states
@@ -70,7 +71,8 @@ export default withRouter(() => {
   return (
     <FeedPresenter
       isLogin={isLogin}
-      loading={loadingMemberPosts || loadingFilteredPosts}
+      loading={mutationLoading || loadingMemberPosts || loadingFilteredPosts}
+      setMutationLoading={setMutationLoading}
       posts={posts}
       selectedMember={selectedMember}
       setSelectedMember={setSelectedMember}

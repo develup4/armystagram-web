@@ -49,6 +49,7 @@ const PostWrapper = styled.div`
 export default ({
   isLogin,
   loading,
+  setMutationLoading,
   posts,
   selectedMember,
   setSelectedMember,
@@ -96,7 +97,10 @@ export default ({
               filterState={filterState}
               setFilterState={setFilterState}
             />
-            <UploadPanel isLogin={isLogin} />
+            <UploadPanel
+              isLogin={isLogin}
+              setMutationLoading={setMutationLoading}
+            />
             <Footer />
           </RigitFixedWrapper>
         </RightPanel>

@@ -6,7 +6,7 @@ import { useMutation } from 'react-apollo-hooks';
 import { useInput } from '../Input';
 import { toast } from 'react-toastify';
 
-const UploadPanelContainer = ({ isLogin }) => {
+const UploadPanelContainer = ({ isLogin, setMutationLoading }) => {
   const caption = useInput('');
   const [hashtags, setHashtags] = useState([]);
 
@@ -53,32 +53,42 @@ const UploadPanelContainer = ({ isLogin }) => {
       return;
     }
 
-    const formData = new FormData();
-    pictures.forEach((picture) => {
-      formData.append('arrayOfFilesName', picture);
-    });
+    try {
+      setMutationLoading(true);
 
-    axios({
-      method: 'POST',
-      url: 'https://armystagram-backend.herokuapp.com/api/upload',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(function (response) {
-      console.log(response.data);
-
-      // Mutation
-      uploadMutation({
-        variables: {
-          files: response.data,
-          caption: caption.value,
-          hashtags,
-        },
+      const formData = new FormData();
+      pictures.forEach((picture) => {
+        formData.append('arrayOfFilesName', picture);
       });
 
-      window.location.reload();
-    });
+      console.log(formData);
+
+      await axios({
+        method: 'POST',
+        url: 'https://armystagram-backend.herokuapp.com/api/upload',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then(function (response) {
+        console.log(response.data);
+
+        // Mutation
+        uploadMutation({
+          variables: {
+            files: response.data,
+            caption: caption.value,
+            hashtags,
+          },
+        });
+
+        window.location.reload();
+      });
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setMutationLoading(false);
+    }
   };
 
   return (
