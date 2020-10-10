@@ -66,11 +66,9 @@ const UploadPanelContainer = ({ isLogin, loading, setMutationLoading }) => {
         formData.append('arrayOfFilesName', picture);
       });
 
-      console.log(formData);
-
       await axios({
         method: 'POST',
-        url: 'https://armystagram-backend.herokuapp.com/api/upload',
+        url: process.env.NODE_ENV === 'development'? 'http://localhost:4000/api/upload': 'https://armystagram-backend.herokuapp.com/api/upload',
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',

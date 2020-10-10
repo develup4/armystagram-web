@@ -235,7 +235,7 @@ const Textarea = styled(TextareaAutosize)`
 
 export default ({
   isLogin,
-  user: { username, profile, isFollowing, isMember },
+  user: { username, profile, isFollowing, isMember, isSelf },
   caption,
   files,
   follow,
@@ -279,7 +279,7 @@ export default ({
             </PictureCount>
           </UserColumn>
         </ProfileWrapper>
-        {!isFollowing && isLogin && (
+        {!isSelf && !isFollowing && isLogin && (
           <FollowButton onClick={follow}>
             <FollowIcon />
           </FollowButton>

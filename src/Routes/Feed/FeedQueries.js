@@ -31,6 +31,7 @@ export const SEE_FILTERED_POSTS = gql`
         username
         isFollowing
         isMember
+        isSelf
       }
       files {
         id
