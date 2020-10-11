@@ -27,5 +27,3 @@ export const LOCAL_LOG_IN = gql`
     logUserIn(token: $token) @client
   }
 `;
-
-// TODO : fix to password to hash value

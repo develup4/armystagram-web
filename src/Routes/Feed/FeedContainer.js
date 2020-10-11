@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo-hooks';
-import { IS_LOGIN } from '../../Resources/SharedQueries/SharedQueries';
-import { SEE_FILTERED_POSTS } from './FeedQueries';
+import {
+  IS_LOGIN,
+  SEE_FILTERED_POSTS,
+} from '../../Resources/SharedQueries/SharedQueries';
 import FeedPresenter from './FeedPresenter';
 
 export default withRouter(() => {

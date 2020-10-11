@@ -10,8 +10,6 @@ import Filter from '../../Components/Filter';
 import Footer from '../../Components/Footer';
 import { Skeleton } from '../../Components/Post/Skeleton';
 
-// TODO 피드에서만 헤더가 왼쪽으로 움직임
-
 const Wrapper = styled.div`
   margin: 0 auto;
   max-width: ${(props) => props.theme.maxWidth};

@@ -6,7 +6,7 @@ const getSize = (size) => {
   let number;
   if (size === 'small') {
     number = 30;
-  } else if (size === 'midddle') {
+  } else if (size === 'middle') {
     number = 50;
   } else if (size === 'large') {
     number = 150;
@@ -24,7 +24,7 @@ const ProfileContainer = styled.div`
   border-radius: 50%;
 `;
 
-const ProfilePicture = ({ size = 'sm', url, className }) => (
+const ProfilePicture = ({ size = 'small', url, className }) => (
   <ProfileContainer className={className} size={size} url={url} />
 );
 

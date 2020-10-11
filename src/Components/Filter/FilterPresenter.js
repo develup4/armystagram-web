@@ -69,13 +69,7 @@ export default ({
           placement='top'
           arrow
         >
-          <SeeAll
-            onClick={() => {
-              // todo
-            }}
-          >
-            필터설정
-          </SeeAll>
+          <SeeAll>필터설정</SeeAll>
         </Tooltip>
       </TitleWrapper>
       <SeeFeedForm>

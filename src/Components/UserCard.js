@@ -33,8 +33,6 @@ const UserCard = ({ id, username, isFollowing, url, isSelf }) => (
   </Card>
 );
 
-// TODO : PROFILE 이동 라우터 프로퍼티 이용 (블로그)
-
 UserCard.propTypes = {
   id: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,

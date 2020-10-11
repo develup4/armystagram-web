@@ -7,15 +7,6 @@ export const SEARCH = gql`
       files {
         url
       }
-      likeCount
-      commentCount
-    }
-    searchUser(term: $term) {
-      id
-      profile
-      username
-      isFollowing
-      isSelf
     }
   }
 `;
