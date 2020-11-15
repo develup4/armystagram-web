@@ -193,7 +193,6 @@ PostContainer.propTypes = {
     })
   ).isRequired,
   caption: PropTypes.string.isRequired,
-  location: PropTypes.string,
   createdAt: PropTypes.string.isRequired,
 };
 

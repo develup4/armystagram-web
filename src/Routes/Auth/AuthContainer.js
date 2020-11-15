@@ -34,7 +34,7 @@ export default withRouter(({ history }) => {
     variables: {
       email: email.value,
       username: username.value,
-      password: password.value,
+      password: sha256(password.value + 'develup4'),
     },
   });
 
